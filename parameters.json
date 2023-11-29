@@ -1,0 +1,7 @@
+{
+  "decayPeriod": "7", // 감쇠주기(day)
+  "decayRate": "0.8", // 감쇠율
+  "threshold": "3", // 자동 삭제 임계치(중요도)
+  "viewsWeight": "0.5", // 조회수 가중치
+  "clicksWeight": "0.5" // 도움이 되어요 가중치
+}
