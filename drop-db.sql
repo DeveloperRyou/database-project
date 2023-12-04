@@ -1,0 +1,1 @@
+DROP DATABASE IF EXISTS `database_project_202302`;
