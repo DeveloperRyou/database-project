@@ -1,33 +1,39 @@
-import axios, { AxiosResponse } from "axios";
+import api from "@/lib/api/network";
+import { AxiosResponse } from "axios";
 
-interface Article {
-  content: string;
+interface User {
+  user_id: number;
+  email_id: string;
+  password: string;
+  name: string;
+  type?: number;
+  birth?: string;
+  sex?: number;
+  address?: string;
+  phone?: string;
 }
 
-export async function getAllArticles() {
-  const res: AxiosResponse<Article[]> = await axios.get("/api/article");
+export async function getAllUsers() {
+  const res: AxiosResponse<User[]> = await api.get("/users");
   return res.data;
 }
 
-export async function getArticleById(id: string) {
-  const res: AxiosResponse<Article> = await axios.get(`/api/article/${id}`);
+export async function getUserbyId(user_id: number) {
+  const res: AxiosResponse<User> = await api.get(`/users/${user_id}`);
   return res.data;
 }
 
-export async function createArticle(article: Article) {
-  const res: AxiosResponse<Article> = await axios.post("/api/article", article);
+export async function updateUser(user_id: number, user: User) {
+  const res: AxiosResponse = await api.put(`/users/${user_id}`, user);
   return res.data;
 }
 
-export async function updateArticle(id: string, article: Article) {
-  const res: AxiosResponse<Article> = await axios.put(
-    `/api/article/${id}`,
-    article
-  );
+export async function signin(email_id: string, password: string) {
+  const res: AxiosResponse = await api.post("/signin", {
+    email_id,
+    password,
+  });
   return res.data;
 }
 
-export async function deleteArticle(id: string) {
-  const res: AxiosResponse<Article> = await axios.delete(`/api/article/${id}`);
-  return res.data;
-}
+export type { User };

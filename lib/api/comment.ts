@@ -1,9 +1,11 @@
-import axios, { AxiosResponse } from "axios";
+import api from "@/lib/api/network";
+import { User } from "@/lib/api/users";
+import { AxiosResponse } from "axios";
 
 interface Comment {
   comment_id: number;
   article_id: number;
-  writer_id: number;
+  writer: User;
   content: string;
   like_count: number;
   view_count: number;
@@ -12,15 +14,15 @@ interface Comment {
 }
 
 export async function getCommentByArticleId(article_id: number) {
-  const res: AxiosResponse<Comment> = await axios.get(
-    `/api/article/${article_id}/comment`
+  const res: AxiosResponse<Comment> = await api.get(
+    `/article/${article_id}/comment`
   );
   return res.data;
 }
 
 export async function createComment(article_id: number, comment: Comment) {
-  const res: AxiosResponse<Comment> = await axios.post(
-    `/api/article/${article_id}/comment`,
+  const res: AxiosResponse<Comment> = await api.post(
+    `/article/${article_id}/comment`,
     comment
   );
   return res.data;
@@ -31,16 +33,16 @@ export async function updateArticle(
   comment_id: number,
   comment: Comment
 ) {
-  const res: AxiosResponse<Comment> = await axios.put(
-    `/api/article/${article_id}/comment/${comment_id}`,
+  const res: AxiosResponse<Comment> = await api.put(
+    `/article/${article_id}/comment/${comment_id}`,
     comment
   );
   return res.data;
 }
 
 export async function deleteArticle(article_id: number, comment_id: number) {
-  const res: AxiosResponse<Comment> = await axios.delete(
-    `/api/comment/${article_id}/comment/${comment_id}`
+  const res: AxiosResponse<Comment> = await api.delete(
+    `/comment/${article_id}/comment/${comment_id}`
   );
   return res.data;
 }
