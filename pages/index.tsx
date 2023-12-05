@@ -1,17 +1,15 @@
 import Head from "next/head";
-import Container from "../components/container";
-import Intro from "../components/intro";
-import Layout from "../components/layout";
-import MoreStories from "../components/more-stories";
-import Post from "../interfaces/post";
-import { getAllPosts } from "../lib/api";
+import Container from "@/components/container";
+import Intro from "@/components/intro";
+import Layout from "@/components/layout";
+import MoreStories from "@/components/article/more-stories";
+import { Article, getAllArticles } from "@/lib/api/article";
 
 type Props = {
-  allPosts: Post[];
+  allArticles: Article[];
 };
 
-export default function Index({ allPosts }: Props) {
-  const morePosts = allPosts.slice(1);
+export default function Index({ allArticles }: Props) {
   return (
     <>
       <Layout>
@@ -20,7 +18,7 @@ export default function Index({ allPosts }: Props) {
         </Head>
         <Container>
           <Intro />
-          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+          {allArticles.length > 0 && <MoreStories articles={allArticles} />}
         </Container>
       </Layout>
     </>
@@ -28,16 +26,9 @@ export default function Index({ allPosts }: Props) {
 }
 
 export const getStaticProps = async () => {
-  const allPosts = getAllPosts([
-    "title",
-    "date",
-    "slug",
-    "author",
-    "coverImage",
-    "excerpt",
-  ]);
+  const allArticles = getAllArticles();
 
   return {
-    props: { allPosts },
+    props: { allArticles },
   };
 };

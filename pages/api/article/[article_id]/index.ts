@@ -1,14 +1,14 @@
 import connect from "@/lib/mysql/connect";
 
 export default async function handler(req, res) {
-  const id = req.query.id;
+  const article_id = req.query.article_id;
   const connection = await connect();
   switch (req.method) {
     case "GET":
       try {
         const [data] = await connection.query(
-          "SELECT * FROM users WHERE user_id = ?",
-          [id]
+          "SELECT * FROM article WHERE article_id = ?",
+          [article_id]
         );
         res.status(200).json(data);
       } catch (error) {
@@ -18,8 +18,19 @@ export default async function handler(req, res) {
     case "PUT":
       try {
         const [data] = await connection.query(
-          "UPDATE users SET ?? = ? WHERE user_id = ?",
-          [req.body.key, req.body.value, id]
+          "UPDATE article SET title = ?, content = ?, author = ? WHERE article_id = ?",
+          [req.body.title, req.body.content, req.body.author, article_id]
+        );
+        res.status(200).json(data);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+      break;
+    case "DELETE":
+      try {
+        const [data] = await connection.query(
+          "DELETE FROM article WHERE article_id = ?",
+          [article_id]
         );
         res.status(200).json(data);
       } catch (error) {
