@@ -8,6 +8,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@toast-ui/react-editor": "^3.2.3",
     "@types/jsonwebtoken": "^9.0.5",
     "axios": "^1.6.2",
     "classnames": "^2.3.1",
