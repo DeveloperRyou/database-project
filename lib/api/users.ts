@@ -38,4 +38,9 @@ export async function signin(email_id: string, password: string) {
   return res.data;
 }
 
+export async function checkSignin() {
+  const res: AxiosResponse = await api.get("/signin/check");
+  return res.data;
+}
+
 export type { AbstractUser, User };

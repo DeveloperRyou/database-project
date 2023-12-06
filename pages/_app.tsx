@@ -2,6 +2,10 @@ import { AppProps } from "next/app";
 import "../styles/index.css";
 import Modal from "react-modal";
 import SigninModal from "@/components/modal/signin-modal";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useEffect, useState } from "react";
+import { checkSignin } from "@/lib/api/users";
 
 const customStyles = {
   content: {
@@ -16,11 +20,31 @@ const customStyles = {
 };
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => {
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    checkSignin()
+      .then((res) => {
+        if (res.status === 200) {
+          setIsOpen(false);
+        } else {
+          setIsOpen(true);
+        }
+      })
+      .catch((err) => {
+        setIsOpen(true);
+      });
+  }, []);
+
   return (
     <>
       <Component {...pageProps} />
-      <Modal isOpen={true} id="modal" style={customStyles}>
-        <SigninModal />
+      <ToastContainer />
+      <Modal isOpen={isOpen} id="modal" style={customStyles}>
+        <SigninModal onClose={onClose} />
       </Modal>
     </>
   );

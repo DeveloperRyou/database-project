@@ -1,6 +1,10 @@
 import connect from "@/lib/mysql/connect";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const comment_id = req.query.comment_id;
   const connection = await connect();
   switch (req.method) {

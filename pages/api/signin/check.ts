@@ -1,16 +1,15 @@
-import connect from "@/lib/mysql/connect";
+import authGuard from "@/lib/auth/auth-guard";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const connection = await connect();
   switch (req.method) {
     case "GET":
       try {
-        const [data] = await connection.query("SELECT * FROM users");
-        res.status(200).json(data);
+        if (!authGuard(req, res)) break;
+        res.status(200).json({});
       } catch (error) {
         console.log(error);
         res.status(500).json({ error: "sql error" });
