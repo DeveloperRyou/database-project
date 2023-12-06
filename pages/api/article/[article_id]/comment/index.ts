@@ -9,7 +9,8 @@ export default async function handler(req, res) {
         const [data] = await connection.query("SELECT * FROM comment");
         res.status(200).json(data);
       } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.log(error);
+        res.status(500).json({ error: "sql error" });
       }
       break;
     case "POST":
@@ -20,7 +21,8 @@ export default async function handler(req, res) {
         );
         res.status(200).json(data);
       } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.log(error);
+        res.status(500).json({ error: "sql error" });
       }
       break;
     default:
