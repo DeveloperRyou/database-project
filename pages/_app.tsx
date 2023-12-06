@@ -5,7 +5,9 @@ import SigninModal from "@/components/modal/signin-modal";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
-import { checkSignin } from "@/lib/api/users";
+import { AbstractUser, checkSignin } from "@/lib/api/users";
+import { useAuth } from "@/hooks/useAuth";
+import { jwtDecode } from "jwt-decode";
 
 const customStyles = {
   content: {
@@ -20,6 +22,7 @@ const customStyles = {
 };
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const { setAuth } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => {
     setIsOpen(false);
@@ -29,6 +32,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     checkSignin()
       .then((res) => {
         setIsOpen(false);
+        const accessToken = localStorage.getItem("accessToken");
+        const user = jwtDecode<AbstractUser>(accessToken);
+        setAuth(user);
       })
       .catch((err) => {
         setIsOpen(true);

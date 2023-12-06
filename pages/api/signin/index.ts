@@ -22,6 +22,7 @@ export default async function handler(
           {
             user_id: data[0].user_id,
             email_id: data[0].email_id,
+            name: data[0].name,
             type: data[0].type,
           },
           process.env.JWT_SECRET

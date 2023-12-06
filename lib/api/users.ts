@@ -5,6 +5,7 @@ interface AbstractUser {
   user_id: number;
   name: string;
   email_id: string;
+  type?: number;
 }
 
 interface User extends AbstractUser {
@@ -39,7 +40,7 @@ export async function signin(email_id: string, password: string) {
 }
 
 export async function checkSignin() {
-  const res: AxiosResponse = await api.get("/signin/check");
+  const res: AxiosResponse<{}> = await api.get("/signin/check");
   return res.data;
 }
 

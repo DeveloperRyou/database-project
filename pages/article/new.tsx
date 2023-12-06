@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import Header from "@/components/header";
+import Container from "@/components/layout/container";
+import Header from "@/components/layout/header";
 import Layout from "@/components/layout";
 import { createArticle } from "@/lib/api/article";
 import dynamic from "next/dynamic";

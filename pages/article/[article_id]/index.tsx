@@ -1,8 +1,8 @@
 import PostBody from "@/components/article/article-body";
 import PostHeader from "@/components/article/article-header";
 import PostTitle from "@/components/article/article-title";
-import Container from "@/components/container";
-import Header from "@/components/header";
+import Container from "@/components/layout/container";
+import Header from "@/components/layout/header";
 import Layout from "@/components/layout";
 import { Article, getArticleById } from "@/lib/api/article";
 import { useRouter } from "next/router";
