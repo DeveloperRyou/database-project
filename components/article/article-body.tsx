@@ -1,4 +1,8 @@
-import markdownStyles from "./markdown-styles.module.css";
+import dynamic from "next/dynamic";
+
+const Viewer = dynamic(() => import("@/components/article/article-viewer"), {
+  ssr: false,
+});
 
 type Props = {
   content: string;
@@ -6,11 +10,8 @@ type Props = {
 
 const ArticleBody = ({ content }: Props) => {
   return (
-    <div className="max-w-2xl mx-auto">
-      <div
-        className={markdownStyles["markdown"]}
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
+    <div className="w-full mx-auto">
+      <Viewer initialValue={content} />
     </div>
   );
 };

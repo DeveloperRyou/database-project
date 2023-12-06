@@ -12,8 +12,8 @@ const ArticlePreview = ({ article }: Props) => {
     <div>
       <h3 className="text-3xl mb-3 leading-snug">
         <Link
-          as={`/articles/${article.article_id}`}
-          href="/articles/[article.article_id]"
+          as={`/article/${article.article_id}`}
+          href="/article/[article.article_id]"
           className="hover:underline"
         >
           {article.content.substring(0, 20) + "..."}

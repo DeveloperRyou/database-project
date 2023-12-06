@@ -1,14 +1,11 @@
-import { useRouter } from "next/router";
-import ErrorPage from "next/error";
-import Container from "@/components/container";
 import PostBody from "@/components/article/article-body";
-import Header from "@/components/header";
 import PostHeader from "@/components/article/article-header";
+import PostTitle from "@/components/article/article-title";
+import Container from "@/components/container";
+import Header from "@/components/header";
 import Layout from "@/components/layout";
 import { Article, getArticleById } from "@/lib/api/article";
-import PostTitle from "@/components/article/article-title";
-import Head from "next/head";
-import markdownToHtml from "@/lib/markdownToHtml";
+import { useRouter } from "next/router";
 
 type Props = {
   article: Article;
@@ -16,9 +13,6 @@ type Props = {
 
 export default function Post({ article }: Props) {
   const router = useRouter();
-  if (!router.isFallback) {
-    return <ErrorPage statusCode={404} />;
-  }
   return (
     <Layout>
       <Container>
@@ -28,12 +22,7 @@ export default function Post({ article }: Props) {
         ) : (
           <>
             <article className="mb-32">
-              <PostHeader
-                title={article.title}
-                coverImage={article.coverImage}
-                date={article.date}
-                author={article.author}
-              />
+              <PostHeader article={article} />
               <PostBody content={article.content} />
             </article>
           </>
@@ -49,15 +38,12 @@ type Params = {
   };
 };
 
-export async function getStaticProps({ params }: Params) {
+export async function getServerSideProps({ params }: Params) {
   const article = await getArticleById(params.article_id);
-  const content = await markdownToHtml(article.content || "");
-
   return {
     props: {
       article: {
         ...article,
-        content,
       },
     },
   };

@@ -1,3 +1,4 @@
+import { Article } from "@/lib/api/article";
 import connect from "@/lib/mysql/connect";
 
 export default async function handler(req, res) {
@@ -7,10 +8,23 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const [data] = await connection.query(
-          "SELECT * FROM article WHERE article_id = ?",
+          "SELECT article.*, users.name, users.email_id FROM article JOIN users ON article.writer_id = users.user_id WHERE article_id = ?",
           [article_id]
         );
-        res.status(200).json(data);
+        const articles: Article[] = (data as any[]).map((row) => ({
+          article_id: row.article_id,
+          writer: {
+            user_id: row.writer_id,
+            name: row.name,
+            email_id: row.email_id,
+          },
+          content: row.content,
+          like_count: row.like_count,
+          view_count: row.view_count,
+          created_at: row.created_at,
+          updated_at: row.updated_at,
+        }));
+        res.status(200).json(articles[0]);
       } catch (error) {
         console.log(error);
         res.status(500).json({ error: "sql error" });

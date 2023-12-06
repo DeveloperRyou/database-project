@@ -9,7 +9,7 @@ export default async function handler(req, res) {
         const [data] = await connection.query(
           "SELECT article.*, users.name, users.email_id FROM article JOIN users ON article.writer_id = users.user_id"
         );
-        const article: Article[] = (data as any[]).map((row) => ({
+        const articles: Article[] = (data as any[]).map((row) => ({
           article_id: row.article_id,
           writer: {
             user_id: row.writer_id,
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
           created_at: row.created_at,
           updated_at: row.updated_at,
         }));
-        res.status(200).json(article);
+        res.status(200).json(articles);
       } catch (error) {
         console.log(error);
         res.status(500).json({ error: "sql error" });

@@ -1,8 +1,7 @@
+import { Article } from "@/lib/api/article";
 import Avatar from "../avatar";
 import DateFormatter from "../date-formatter";
-import CoverImage from "../cover-image";
 import ArticleTitle from "./article-title";
-import { Article } from "@/lib/api/article";
 
 type Props = {
   article: Article;
@@ -11,16 +10,13 @@ type Props = {
 const ArticleHeader = ({ article }: Props) => {
   return (
     <>
-      <ArticleTitle>{article.content.substring(0, 10) + "..."}</ArticleTitle>
-      <div className="hidden md:block md:mb-12">
-        <Avatar name={article.writer.name} />
-      </div>
-      <div className="max-w-2xl mx-auto">
-        <div className="block md:hidden mb-6">
-          <Avatar name={author.name} picture={author.picture} />
+      <ArticleTitle>{article.content.substring(0, 20) + "..."}</ArticleTitle>
+      <div className="flex w-full mx-auto justify-between mb-8">
+        <div>
+          <Avatar name={article.writer.name} />
         </div>
-        <div className="mb-6 text-lg">
-          <DateFormatter dateString={date} />
+        <div className="text-lg">
+          <DateFormatter dateString={article.created_at} />
         </div>
       </div>
     </>
