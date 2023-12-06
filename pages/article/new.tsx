@@ -4,6 +4,8 @@ import Layout from "@/components/layout";
 import { createArticle } from "@/lib/api/article";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ArticleEditor = dynamic(
   () => import("@/components/article/article-editor"),
@@ -18,7 +20,9 @@ export default function Post() {
     try {
       await createArticle(str);
       router.push("/");
-    } catch (error) {}
+    } catch (error) {
+      toast.error(error.response.data.error || "작성에 실패했습니다.");
+    }
   };
 
   return (
@@ -26,6 +30,7 @@ export default function Post() {
       <Container>
         <Header />
         <ArticleEditor onClickSubmit={onClickSubmit} />
+        <ToastContainer />
       </Container>
     </Layout>
   );
