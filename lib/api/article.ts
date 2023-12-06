@@ -1,10 +1,10 @@
 import api from "@/lib/api/network";
-import { User } from "@/lib/api/users";
+import { AbstractUser } from "@/lib/api/users";
 import { AxiosResponse } from "axios";
 
 interface Article {
   article_id: number;
-  writer: User;
+  writer: AbstractUser;
   content: string;
   like_count: number;
   view_count: number;

@@ -1,11 +1,13 @@
 import api from "@/lib/api/network";
 import { AxiosResponse } from "axios";
 
-interface User {
+interface AbstractUser {
   user_id: number;
-  email_id: string;
-  password: string;
   name: string;
+  email_id: string;
+}
+
+interface User extends AbstractUser {
   type?: number;
   birth?: string;
   sex?: number;
@@ -36,4 +38,4 @@ export async function signin(email_id: string, password: string) {
   return res.data;
 }
 
-export type { User };
+export type { AbstractUser, User };
