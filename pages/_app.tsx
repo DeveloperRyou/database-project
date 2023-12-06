@@ -28,11 +28,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     checkSignin()
       .then((res) => {
-        if (res.status === 200) {
-          setIsOpen(false);
-        } else {
-          setIsOpen(true);
-        }
+        setIsOpen(false);
       })
       .catch((err) => {
         setIsOpen(true);
