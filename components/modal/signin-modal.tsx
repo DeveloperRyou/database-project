@@ -1,4 +1,6 @@
-import { signin } from "@/lib/api/users";
+import { useAuth } from "@/hooks/useAuth";
+import { AbstractUser, signin } from "@/lib/api/users";
+import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -8,6 +10,7 @@ interface Props {
 }
 
 export default function SigninModal({ onClose }: Props) {
+  const { setAuth } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,6 +23,9 @@ export default function SigninModal({ onClose }: Props) {
     try {
       const res = await signin(email, password);
       localStorage.setItem("accessToken", res.accessToken);
+      const user = jwtDecode<AbstractUser>(res.accessToken);
+      if (!user) return;
+      setAuth(user);
       toast.success("로그인 성공");
       onClose();
       router.push("/");

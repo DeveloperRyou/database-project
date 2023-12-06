@@ -33,7 +33,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       .then((res) => {
         setIsOpen(false);
         const accessToken = localStorage.getItem("accessToken");
+        if (!accessToken) return;
         const user = jwtDecode<AbstractUser>(accessToken);
+        if (!user) return;
         setAuth(user);
       })
       .catch((err) => {
