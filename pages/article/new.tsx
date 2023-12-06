@@ -1,6 +1,7 @@
 import Container from "@/components/container";
 import Header from "@/components/header";
 import Layout from "@/components/layout";
+import { createArticle } from "@/lib/api/article";
 import dynamic from "next/dynamic";
 
 const ArticleEditor = dynamic(
@@ -15,7 +16,7 @@ export default function Post() {
     <Layout>
       <Container>
         <Header />
-        <ArticleEditor onClick={(str) => console.log(str)} />
+        <ArticleEditor onClick={(str) => createArticle(str)} />
       </Container>
     </Layout>
   );

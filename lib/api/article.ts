@@ -22,23 +22,20 @@ export async function getArticleById(article_id: number) {
   return res.data;
 }
 
-export async function createArticle(article: Article) {
-  const res: AxiosResponse<Article> = await api.post("/article", article);
+export async function createArticle(content: string) {
+  const res: AxiosResponse = await api.post("/article", { content });
   return res.data;
 }
 
-export async function updateArticle(article_id: number, article: Article) {
-  const res: AxiosResponse<Article> = await api.put(
-    `/article/${article_id}`,
-    article
-  );
+export async function updateArticle(article_id: number, content: string) {
+  const res: AxiosResponse = await api.put(`/article/${article_id}`, {
+    content,
+  });
   return res.data;
 }
 
 export async function deleteArticle(article_id: number) {
-  const res: AxiosResponse<Article> = await api.delete(
-    `/article/${article_id}`
-  );
+  const res: AxiosResponse = await api.delete(`/article/${article_id}`);
   return res.data;
 }
 

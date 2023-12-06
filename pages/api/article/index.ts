@@ -13,10 +13,23 @@ export default async function handler(req, res) {
       break;
     case "POST":
       try {
-        const [data] = await connection.query(
-          "INSERT INTO article (title, content, author) VALUES (?, ?, ?)",
-          [req.body.title, req.body.content, req.body.author]
+        const content = req.body.content;
+        if (!content) {
+          res.status(400).json({ error: "content is required" });
+          return;
+        }
+        await connection.beginTransaction();
+        await connection.query("INSERT INTO importance () VALUES ()");
+        const [importanceData] = await connection.query(
+          "SELECT MAX(importance_id) FROM importance"
         );
+        console.log(importanceData);
+        const importance_id = importanceData[0]["MAX(importance_id)"];
+        const [data] = await connection.query(
+          "INSERT INTO article (writer_id, importance_id, content) VALUES (?, ?, ?)",
+          [1, importance_id, content]
+        );
+        await connection.commit();
         res.status(200).json(data);
       } catch (error) {
         res.status(500).json({ error: error.message });
