@@ -16,13 +16,13 @@ const ArticlePreview = ({ article }: Props) => {
           href="/articles/[article.article_id]"
           className="hover:underline"
         >
-          {article.content.substring(0, 10) + "..."}
+          {article.content.substring(0, 20) + "..."}
         </Link>
       </h3>
-      <div className="text-lg mb-4">
+      <div className="flex w-full justify-between text-lg mb-4">
+        <Avatar name={article.writer.name} />
         <DateFormatter dateString={article.created_at} />
       </div>
-      <Avatar name={article.writer.name} />
     </div>
   );
 };

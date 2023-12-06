@@ -22,7 +22,6 @@ export default async function handler(req, res) {
           created_at: row.created_at,
           updated_at: row.updated_at,
         }));
-        console.log(article);
         res.status(200).json(article);
       } catch (error) {
         console.log(error);

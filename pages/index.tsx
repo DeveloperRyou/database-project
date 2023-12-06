@@ -18,6 +18,9 @@ export default function Index({ allArticles }: Props) {
         </Head>
         <Container>
           <Intro />
+          <h3 className="mb-8 text-3xl md:text-5xl font-bold tracking-tighter leading-tight">
+            게시글
+          </h3>
           {allArticles.length > 0 && <MoreStories articles={allArticles} />}
         </Container>
       </Layout>
