@@ -1,6 +1,6 @@
 import { Article } from "@/lib/api/article";
-import getUserId from "@/lib/auth/admin-guard";
 import authGuard from "@/lib/auth/auth-guard";
+import getUserId from "@/lib/auth/get-user-id";
 import connect from "@/lib/mysql/connect";
 import { NextApiRequest, NextApiResponse } from "next";
 

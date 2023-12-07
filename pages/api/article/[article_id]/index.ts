@@ -1,8 +1,9 @@
 import { Article } from "@/lib/api/article";
 import adminGuard from "@/lib/auth/admin-guard";
-import getUserId from "@/lib/auth/admin-guard";
 import authGuard from "@/lib/auth/auth-guard";
+import getUserId from "@/lib/auth/get-user-id";
 import connect from "@/lib/mysql/connect";
+import { ResultSetHeader } from "mysql2";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -63,10 +64,15 @@ export default async function handler(
           return;
         } else {
           const user_id = getUserId(req);
+          console.log(user_id, article_id);
           const [data] = await connection.query(
             "DELETE FROM article WHERE article_id = ? AND writer_id = ?",
             [article_id, user_id]
           );
+          if ((data as ResultSetHeader).affectedRows === 0) {
+            res.status(403).json({ error: "Forbidden user" });
+            return;
+          }
           res.status(200).json(data);
           return;
         }
