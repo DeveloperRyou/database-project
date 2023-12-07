@@ -5,3 +5,28 @@
 input {
   @apply focus:outline-none;
 }
+
+#comment {
+  transition: all 0.3s;
+}
+
+#comment #static-content .arrow {
+  transform: rotate(0deg);
+  transition: all 0.3s;
+}
+
+#comment[aria-expanded="true"] #static-content .arrow {
+  transform: rotate(180deg);
+  transition: all 0.3s;
+}
+
+#comment #collapse-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: all ease-out 0.3s;
+}
+
+#comment[aria-expanded="true"] #collapse-content {
+  max-height: 50px;
+  transition: all ease-in 0.3s;
+}
