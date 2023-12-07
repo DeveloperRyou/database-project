@@ -41,7 +41,7 @@ export async function updateComment(
 
 export async function deleteComment(article_id: number, comment_id: number) {
   const res: AxiosResponse = await api.delete(
-    `/comment/${article_id}/comment/${comment_id}`
+    `/article/${article_id}/comment/${comment_id}`
   );
   return res.data;
 }

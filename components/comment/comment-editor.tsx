@@ -1,27 +1,39 @@
-import { createComment } from "@/lib/api/comment";
+import { createComment, updateComment } from "@/lib/api/comment";
 import { useState } from "react";
 import { toast } from "react-toastify";
 interface Props {
   article_id: number;
+  comment_id?: number;
   initial_content?: string;
   callback?: () => void;
 }
 
 export default function CommentEditor({
   article_id,
+  comment_id,
   initial_content,
   callback,
 }: Props) {
   const [value, setValue] = useState(initial_content || "");
 
   const onSubmitComment = (content: string) => {
-    createComment(article_id, content)
-      .then(() => {
-        callback && callback();
-      })
-      .catch((err) => {
-        toast.error(err.response.data.error);
-      });
+    if (comment_id) {
+      updateComment(article_id, comment_id, content)
+        .then(() => {
+          callback && callback();
+        })
+        .catch((err) => {
+          toast.error(err.response.data.error);
+        });
+    } else {
+      createComment(article_id, content)
+        .then(() => {
+          callback && callback();
+        })
+        .catch((err) => {
+          toast.error(err.response.data.error);
+        });
+    }
   };
   const onChange = (e) => {
     setValue(e.target.value);
