@@ -10,6 +10,9 @@ export default async function handler(
     case "GET":
       try {
         const [data] = await connection.query("SELECT * FROM users");
+        (data as []).forEach((user: any) => {
+          delete user.password;
+        });
         res.status(200).json(data);
       } catch (error) {
         console.log(error);

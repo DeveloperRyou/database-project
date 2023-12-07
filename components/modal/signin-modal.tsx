@@ -1,3 +1,4 @@
+import DefaultInput from "@/components/default-input";
 import { useAuth } from "@/hooks/useAuth";
 import { AbstractUser, signin } from "@/lib/api/users";
 import { jwtDecode } from "jwt-decode";
@@ -39,16 +40,14 @@ export default function SigninModal({ onClose }: Props) {
       <div className="flex flex-col justify-center h-full">
         <form onSubmit={onSubmit}>
           <div className="flex flex-col gap-4">
-            <input
-              className="w-full h-full px-4 py-2 border border-gray-600"
+            <DefaultInput
               type="text"
               id="email"
               placeholder="이메일"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <input
-              className="w-full h-full px-4 py-2 border border-gray-600"
+            <DefaultInput
               type="password"
               id="password"
               placeholder="비밀번호"

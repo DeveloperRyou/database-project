@@ -14,7 +14,14 @@ export default async function handler(
           "SELECT * FROM users WHERE user_id = ?",
           [id]
         );
-        res.status(200).json(data);
+        if ((data as []).length === 0) {
+          res.status(404).json({ error: "Not found" });
+          return;
+        }
+        (data as []).forEach((user: any) => {
+          delete user.password;
+        });
+        res.status(200).json(data[0]);
       } catch (error) {
         console.log(error);
         res.status(500).json({ error: "sql error" });
