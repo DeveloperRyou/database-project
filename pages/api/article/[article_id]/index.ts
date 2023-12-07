@@ -1,4 +1,7 @@
 import { Article } from "@/lib/api/article";
+import adminGuard from "@/lib/auth/admin-guard";
+import getUserId from "@/lib/auth/admin-guard";
+import authGuard from "@/lib/auth/auth-guard";
 import connect from "@/lib/mysql/connect";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -35,10 +38,12 @@ export default async function handler(
       }
       break;
     case "PUT":
+      if (!authGuard(req, res)) return;
       try {
+        const user_id = getUserId(req);
         const [data] = await connection.query(
-          "UPDATE article SET title = ?, content = ?, author = ? WHERE article_id = ?",
-          [req.body.title, req.body.content, req.body.author, article_id]
+          "UPDATE article SET content = ? WHERE article_id = ? AND writer_id = ?",
+          [req.body.content, article_id, user_id]
         );
         res.status(200).json(data);
       } catch (error) {
@@ -47,12 +52,24 @@ export default async function handler(
       }
       break;
     case "DELETE":
+      if (!authGuard(req, res)) return;
       try {
-        const [data] = await connection.query(
-          "DELETE FROM article WHERE article_id = ?",
-          [article_id]
-        );
-        res.status(200).json(data);
+        if (adminGuard(req)) {
+          const [data] = await connection.query(
+            "DELETE FROM article WHERE article_id = ?",
+            [article_id]
+          );
+          res.status(200).json(data);
+          return;
+        } else {
+          const user_id = getUserId(req);
+          const [data] = await connection.query(
+            "DELETE FROM article WHERE article_id = ? AND writer_id = ?",
+            [article_id, user_id]
+          );
+          res.status(200).json(data);
+          return;
+        }
       } catch (error) {
         console.log(error);
         res.status(500).json({ error: "sql error" });

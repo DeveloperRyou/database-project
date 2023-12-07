@@ -1,4 +1,6 @@
 import { Article } from "@/lib/api/article";
+import getUserId from "@/lib/auth/admin-guard";
+import authGuard from "@/lib/auth/auth-guard";
 import connect from "@/lib/mysql/connect";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -33,22 +35,17 @@ export default async function handler(
       }
       break;
     case "POST":
+      if (!authGuard(req, res)) return;
       try {
+        const user_id = getUserId(req);
         const content = req.body.content;
         if (!content) {
           res.status(400).json({ error: "content is required" });
           return;
         }
-        await connection.beginTransaction();
-        await connection.query("INSERT INTO importance () VALUES ()");
-        const [importanceData] = await connection.query(
-          "SELECT MAX(importance_id) FROM importance"
-        );
-        console.log(importanceData);
-        const importance_id = importanceData[0]["MAX(importance_id)"];
         const [data] = await connection.query(
-          "INSERT INTO article (writer_id, importance_id, content) VALUES (?, ?, ?)",
-          [1, importance_id, content]
+          "INSERT INTO article (writer_id, content) VALUES (?, ?)",
+          [user_id, content]
         );
         await connection.commit();
         res.status(200).json(data);
