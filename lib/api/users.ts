@@ -1,3 +1,4 @@
+import { DateFormatterForDB } from "@/components/date-formatter";
 import api from "@/lib/api/network";
 import { AxiosResponse } from "axios";
 
@@ -26,8 +27,21 @@ export async function getUserbyId(user_id: number) {
   return res.data;
 }
 
-export async function updateUser(user_id: number, user: User) {
-  const res: AxiosResponse = await api.put(`/users/${user_id}`, user);
+export async function updateUser(
+  user_id: number,
+  name: string | null,
+  birth: string | null,
+  sex: 0 | 1 | null,
+  address: string | null,
+  phone: string | null
+) {
+  const res: AxiosResponse = await api.put(`/users/${user_id}`, {
+    name,
+    birth: birth ? DateFormatterForDB({ dateString: birth }) : null,
+    phone,
+    sex,
+    address,
+  });
   return res.data;
 }
 

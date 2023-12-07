@@ -13,4 +13,10 @@ const DateFormatter = ({ dateString }: Props) => {
   );
 };
 
+const DateFormatterForDB = ({ dateString }: Props) => {
+  const date = parseISO(dateString);
+  return format(date, "yyyy-MM-dd HH:mm:ss");
+};
+
 export default DateFormatter;
+export { DateFormatterForDB };

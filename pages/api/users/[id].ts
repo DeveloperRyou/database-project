@@ -1,3 +1,5 @@
+import authGuard from "@/lib/auth/auth-guard";
+import getUserId from "@/lib/auth/get-user-id";
 import connect from "@/lib/mysql/connect";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -28,10 +30,23 @@ export default async function handler(
       }
       break;
     case "PUT":
+      if (!authGuard(req, res)) return;
       try {
+        const user_id = getUserId(req);
+        if (user_id !== parseInt(id as string)) {
+          res.status(403).json({ error: "Forbidden" });
+          return;
+        }
         const [data] = await connection.query(
-          "UPDATE users SET ?? = ? WHERE user_id = ?",
-          [req.body.key, req.body.value, id]
+          "UPDATE users SET name = ?, birth = ?, phone = ?, sex = ?, address = ? WHERE user_id = ?",
+          [
+            req.body.name,
+            req.body.birth,
+            req.body.phone,
+            req.body.sex,
+            req.body.address,
+            user_id,
+          ]
         );
         res.status(200).json(data);
       } catch (error) {
