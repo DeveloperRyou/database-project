@@ -1,7 +1,7 @@
 import { getTimer } from "@/lib/api/timer";
-import data from "@/parameters.json" assert { type: "json" };
+import paramsData from "@/lib/params";
 import { atom, useAtom } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 interface ParamsType {
@@ -11,14 +11,6 @@ interface ParamsType {
   viewsWeight: number;
   clicksWeight: number;
 }
-
-const paramsData: ParamsType = {
-  decayPeriod: parseFloat(data.decayPeriod),
-  decayRate: parseFloat(data.decayRate),
-  threshold: parseFloat(data.threshold),
-  viewsWeight: parseFloat(data.viewsWeight),
-  clicksWeight: parseFloat(data.clicksWeight),
-};
 
 const paramsAtom = atom<ParamsType>(paramsData);
 const remainingTimeAtom = atom<number>(0);

@@ -1,6 +1,7 @@
 import authGuard from "@/lib/auth/auth-guard";
 import getUserId from "@/lib/auth/get-user-id";
 import connect from "@/lib/mysql/connect";
+import paramsData from "@/lib/params";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -37,6 +38,10 @@ export default async function handler(
           "UPDATE article SET like_count = like_count + 1 WHERE article_id = ?",
           [article_id]
         );
+        await connection.query(
+          "UPDATE article SET importance_value = importance_value + ? WHERE article_id = ?",
+          [paramsData.clicksWeight, article_id]
+        );
         await connection.commit();
         res.status(200).json({});
       } catch (error) {
@@ -57,6 +62,10 @@ export default async function handler(
         await connection.query(
           "UPDATE article SET like_count = like_count - 1 WHERE article_id = ?",
           [article_id]
+        );
+        await connection.query(
+          "UPDATE article SET importance_value = importance_value - ? WHERE article_id = ?",
+          [paramsData.clicksWeight, article_id]
         );
         await connection.commit();
         res.status(200).json({});

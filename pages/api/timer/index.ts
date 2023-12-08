@@ -1,14 +1,6 @@
 import connect from "@/lib/mysql/connect";
+import paramsData from "@/lib/params";
 import { NextApiRequest, NextApiResponse } from "next";
-import data from "@/parameters.json" assert { type: "json" };
-
-const paramsData = {
-  decayPeriod: parseFloat(data.decayPeriod),
-  decayRate: parseFloat(data.decayRate),
-  threshold: parseFloat(data.threshold),
-  viewsWeight: parseFloat(data.viewsWeight),
-  clicksWeight: parseFloat(data.clicksWeight),
-};
 
 let interval = null;
 
