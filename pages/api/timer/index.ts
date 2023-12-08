@@ -10,19 +10,34 @@ const paramsData = {
   clicksWeight: parseFloat(data.clicksWeight),
 };
 
-let interval = setInterval(() => {
-  timer--;
-  if (timer === 0) {
-    timer = paramsData.decayPeriod * 24 * 60 * 60;
-  }
-}, 1000);
-let timer = paramsData.decayPeriod * 24 * 60 * 60;
+let interval = null;
+
+if (interval === null)
+  interval = setInterval(async () => {
+    timer--;
+    if (timer < 0) {
+      try {
+        const connection = await connect();
+        await connection.query(
+          `DELETE FROM article WHERE importance_value < ?`,
+          [paramsData.threshold]
+        );
+        await connection.query(
+          `DELETE FROM comment WHERE importance_value < ?`,
+          [paramsData.threshold]
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      timer = Math.floor(paramsData.decayPeriod * 24 * 60 * 60);
+    }
+  }, 1000);
+let timer = Math.floor(paramsData.decayPeriod * 24 * 60 * 60);
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  //const connection = await connect();
   switch (req.method) {
     case "GET":
       res.status(200).json({ timer });

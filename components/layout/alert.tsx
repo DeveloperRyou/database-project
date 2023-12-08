@@ -21,7 +21,9 @@ const Alert = () => {
               {" " + Math.floor(remainingTime / 86400)}일
               {" " + Math.floor((remainingTime % 86400) / 3600)}시간
               {" " + Math.floor((remainingTime % 3600) / 60)}분
-              {" " + (remainingTime % 60)}초 / 감쇄율 : {params.decayRate}
+              {" " + (remainingTime % 60)}초 / 감쇄율 : {params.decayRate} /
+              임계치 : {params.threshold} / 조회수 가중치 : {params.viewsWeight}{" "}
+              / 추천수 가중치 : {params.clicksWeight}
             </div>
           </div>
           <div className="flex gap-2 py-2 text-center text-sm">
