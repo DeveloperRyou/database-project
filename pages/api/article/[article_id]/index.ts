@@ -46,7 +46,11 @@ export default async function handler(
           "UPDATE article SET content = ? WHERE article_id = ? AND writer_id = ?",
           [req.body.content, article_id, user_id]
         );
-        res.status(200).json(data);
+        if ((data as ResultSetHeader).affectedRows === 0) {
+          res.status(403).json({ error: "Forbidden user" });
+          return;
+        }
+        res.status(200);
       } catch (error) {
         console.log(error);
         res.status(500).json({ error: "sql error" });
@@ -56,11 +60,10 @@ export default async function handler(
       if (!authGuard(req, res)) return;
       try {
         if (adminGuard(req)) {
-          const [data] = await connection.query(
-            "DELETE FROM article WHERE article_id = ?",
-            [article_id]
-          );
-          res.status(200).json(data);
+          await connection.query("DELETE FROM article WHERE article_id = ?", [
+            article_id,
+          ]);
+          res.status(200);
           return;
         } else {
           const user_id = getUserId(req);
@@ -73,7 +76,7 @@ export default async function handler(
             res.status(403).json({ error: "Forbidden user" });
             return;
           }
-          res.status(200).json(data);
+          res.status(200);
           return;
         }
       } catch (error) {

@@ -47,10 +47,8 @@ export default async function handler(
           "INSERT INTO article (writer_id, content) VALUES (?, ?)",
           [user_id, content]
         );
-        await connection.commit();
-        res.status(200).json(data);
+        res.status(200);
       } catch (error) {
-        await connection.rollback();
         console.log(error);
         res.status(500).json({ error: "sql error" });
       }
