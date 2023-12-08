@@ -45,7 +45,7 @@ export default async function handler(
           "INSERT INTO comment (article_id, writer_id, content) VALUES (?, ?, ?)",
           [article_id, user_id, req.body.content]
         );
-        res.status(200).json(data);
+        res.status(200).json({});
       } catch (error) {
         console.log(error);
         res.status(500).json({ error: "sql error" });
