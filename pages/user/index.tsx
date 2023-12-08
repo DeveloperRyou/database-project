@@ -1,3 +1,4 @@
+import { DateFormatterForDB } from "@/components/date-formatter";
 import DefaultInput from "@/components/default-input";
 import Layout from "@/components/layout";
 import Container from "@/components/layout/container";
@@ -23,6 +24,7 @@ export default function Home() {
   const { auth } = useAuth();
   const router = useRouter();
   const [user, setUser] = useState<User>();
+
   useEffect(() => {
     if (!router.isReady) return;
     if (auth === null) {
@@ -30,8 +32,11 @@ export default function Home() {
       return;
     }
     getUserbyId(auth.user_id)
-      .then((res) => {
+      .then((res: any) => {
         console.log(res);
+        res.type = res.type === 0 ? "유저" : "어드민";
+        res.sex = res.sex === 0 ? "남자" : "여자";
+        res.birth = DateFormatterForDB({ dateString: res.birth });
         setUser(res);
       })
       .catch((err) => {
@@ -40,12 +45,16 @@ export default function Home() {
   }, [auth]);
 
   const onClickSave = () => {
-    const sex = parseInt(user.sex as any);
+    let sex;
+    if ((user.sex as any) === "남자") sex = 0;
+    else if ((user.sex as any) === "여자") sex = 1;
+    else sex = null;
+
     updateUser(
       user.user_id,
       user.name,
       user.birth,
-      sex === 0 || sex === 1 ? sex : null,
+      sex,
       user.address,
       user.phone
     )
@@ -71,13 +80,7 @@ export default function Home() {
               <div className="h-fit my-auto w-1/4">{userInfo[info]}</div>
               <DefaultInput
                 type="text"
-                value={
-                  info === "type"
-                    ? user?.type === 0
-                      ? "유저"
-                      : "어드민"
-                    : user?.[info]
-                }
+                value={user?.[info]}
                 disabled={
                   info === "email_id" || info === "type" || info === "user_id"
                 }

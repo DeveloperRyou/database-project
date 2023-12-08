@@ -14,7 +14,8 @@ const DateFormatter = ({ dateString }: Props) => {
 };
 
 const DateFormatterForDB = ({ dateString }: Props) => {
-  const date = parseISO(dateString);
+  const date = new Date(dateString);
+  if (isNaN(date?.getTime())) return null;
   return format(date, "yyyy-MM-dd HH:mm:ss");
 };
 
