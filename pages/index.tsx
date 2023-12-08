@@ -118,7 +118,7 @@ export default function Index({ allArticles }: Props) {
   );
 }
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const allArticles = await getAllArticles();
 
   return {
