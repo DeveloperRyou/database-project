@@ -28,6 +28,7 @@ export default async function handler(
       if (!authGuard(req, res)) return;
       try {
         const user_id = getUserId(req);
+        await connection.beginTransaction();
         await connection.query(
           "INSERT INTO like_article_relation (user_id, article_id) VALUES (?, ?)",
           [user_id, article_id]
@@ -36,8 +37,10 @@ export default async function handler(
           "UPDATE article SET like_count = like_count + 1 WHERE article_id = ?",
           [article_id]
         );
+        await connection.commit();
         res.status(200).json({});
       } catch (error) {
+        await connection.rollback();
         console.log(error);
         res.status(500).json({ error: "sql error" });
       }
@@ -46,6 +49,7 @@ export default async function handler(
       if (!authGuard(req, res)) return;
       try {
         const user_id = getUserId(req);
+        await connection.beginTransaction();
         await connection.query(
           "DELETE FROM like_article_relation WHERE user_id = ? AND article_id = ?",
           [user_id, article_id]
@@ -54,8 +58,10 @@ export default async function handler(
           "UPDATE article SET like_count = like_count - 1 WHERE article_id = ?",
           [article_id]
         );
+        await connection.commit();
         res.status(200).json({});
       } catch (error) {
+        await connection.rollback();
         console.log(error);
         res.status(500).json({ error: "sql error" });
       }

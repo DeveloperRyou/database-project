@@ -73,7 +73,7 @@ export default function CommentBody({ article_id, comment }: Props) {
             <div className="flex justify-between mt-2">
               <div className="flex gap-2 text-xs m-auto">
                 <div className="h-fit mt-auto">추천하기</div>
-                <Icon name="like-1" sz={24} onClick={onClickLike} />
+                <Icon name="like" sz={24} onClick={onClickLike} />
               </div>
             </div>
           </div>

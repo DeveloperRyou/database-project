@@ -50,7 +50,7 @@ export default function Home({ article }: Props) {
           <>
             <article className="mb-32">
               <ArticleHeader article={article} />
-              <ArticleBody content={article.content} />
+              <ArticleBody article={article} />
             </article>
             <article className="mb-32">
               {commentList.map((comment, idx) => (
