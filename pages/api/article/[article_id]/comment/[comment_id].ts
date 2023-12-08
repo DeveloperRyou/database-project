@@ -34,6 +34,10 @@ export default async function handler(
           updated_at: row.updated_at,
           importance_value: row.importance_value,
         }));
+        if (comments.length === 0) {
+          res.status(404).json({ error: "Comment not found" });
+          return;
+        }
         res.status(200).json(comments[0]);
       } catch (error) {
         console.log(error);

@@ -33,6 +33,10 @@ export default async function handler(
           updated_at: row.updated_at,
           importance_value: row.importance_value,
         }));
+        if (articles.length === 0) {
+          res.status(404).json({ error: "Article not found" });
+          return;
+        }
         res.status(200).json(articles[0]);
       } catch (error) {
         console.log(error);
