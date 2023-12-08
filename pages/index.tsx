@@ -20,16 +20,16 @@ export default function Index({ allArticles }: Props) {
 
   useEffect(() => {
     if (filter === "latest") {
-      setArticles(
-        allArticles.sort((a, b) => {
+      setArticles((prev) => {
+        return prev.sort((a, b) => {
           return (
             new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
           );
-        })
-      );
+        });
+      });
     } else if (filter === "view") {
-      setArticles(
-        allArticles.sort((a, b) => {
+      setArticles((prev) =>
+        prev.sort((a, b) => {
           return b.view_count - a.view_count;
         })
       );
@@ -72,7 +72,7 @@ export default function Index({ allArticles }: Props) {
             게시글
           </h3>
           {articles.length > 0 && <MoreStories articles={articles} />}
-          <div className="flex justify-between">
+          <div className="flex justify-between my-4">
             <div className="flex gap-2">
               <div className="h-fit my-auto">검색</div>
               <DefaultInput
