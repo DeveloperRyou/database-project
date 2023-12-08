@@ -27,6 +27,7 @@ export default async function handler(
           view_count: row.view_count,
           created_at: row.created_at,
           updated_at: row.updated_at,
+          importance_value: row.importance_value,
         }));
         res.status(200).json(articles);
       } catch (error) {

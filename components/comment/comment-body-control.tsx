@@ -1,18 +1,21 @@
 import Icon from "@/components/icon";
 
 interface Props {
+  importance_value: number;
   onClickEdit: () => void;
   onClickDelete: () => void;
   onClickView: () => void;
 }
 
 export default function CommentBodyControl({
+  importance_value,
   onClickEdit,
   onClickDelete,
   onClickView,
 }: Props) {
   return (
     <div className="flex gap-2">
+      <div className="text-xs h-fit my-auto">중요도 : {importance_value}</div>
       <Icon
         name="edit"
         sz={18}

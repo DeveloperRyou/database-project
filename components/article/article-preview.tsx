@@ -22,14 +22,19 @@ const ArticlePreview = ({ article }: Props) => {
   };
   return (
     <div>
-      <h3 className="text-3xl mb-3 leading-snug">
-        <div
-          className="cursor-pointer hover:underline"
-          onClick={onClickArticle}
-        >
-          {article.content.substring(0, 20) + "..."}
+      <div className="flex justify-between">
+        <h3 className="text-3xl mb-3 leading-snug">
+          <div
+            className="cursor-pointer hover:underline w-fit"
+            onClick={onClickArticle}
+          >
+            {article.content.substring(0, 10) + "..."}
+          </div>
+        </h3>
+        <div className="h-fit my-auto text-sm">
+          중요도 : {article.importance_value}
         </div>
-      </h3>
+      </div>
       <div className="flex w-full justify-between text-lg mb-4">
         <Avatar name={article.writer.name} />
         <DateFormatter dateString={article.created_at} />

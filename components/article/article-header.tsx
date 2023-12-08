@@ -30,6 +30,9 @@ const ArticleHeader = ({ article }: Props) => {
       <div className="flex justify-between mb-6">
         <ArticleTitle>{article.content.substring(0, 20) + "..."}</ArticleTitle>
         <div className="flex gap-2">
+          <div className="text-sm h-fit my-auto">
+            중요도 : {article.importance_value}
+          </div>
           <Icon
             name="edit"
             sz={24}
@@ -48,7 +51,7 @@ const ArticleHeader = ({ article }: Props) => {
         <div>
           <Avatar name={article.writer.name} />
         </div>
-        <div className="text-lg">
+        <div className="text-sm">
           <DateFormatter dateString={article.created_at} />
         </div>
       </div>

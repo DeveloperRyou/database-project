@@ -11,6 +11,7 @@ import { createViewComment } from "@/lib/api/view";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import DateFormatter from "../date-formatter";
 
 interface Props {
   article_id: number;
@@ -100,12 +101,17 @@ export default function CommentBody({ article_id, comment }: Props) {
                 : comment.content.substring(0, 5) + "..."}
             </div>
             <CommentBodyControl
+              importance_value={comment.importance_value}
               onClickEdit={onClickEdit}
               onClickDelete={onClickDelete}
               onClickView={onClickView}
             />
           </div>
           <div id="collapse-content">
+            <div className="flex justify-between mt-2 text-center text-xs">
+              <div>{comment.writer.name}</div>
+              <div>{DateFormatter({ dateString: comment.created_at })}</div>
+            </div>
             <div className="flex justify-center gap-4 mt-2 text-center text-xs">
               <div className="border border-black py-1 px-2">
                 <Icon name="view" sz={18} />

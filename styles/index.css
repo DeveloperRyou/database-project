@@ -27,6 +27,6 @@ input {
 }
 
 #comment[aria-expanded="true"] #collapse-content {
-  max-height: 60px;
+  max-height: 80px;
   transition: all ease-in 0.3s;
 }

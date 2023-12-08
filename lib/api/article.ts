@@ -10,6 +10,7 @@ interface Article {
   view_count: number;
   created_at: string;
   updated_at: string;
+  importance_value: number;
 }
 
 export async function getAllArticles() {
