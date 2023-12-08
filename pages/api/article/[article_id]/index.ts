@@ -50,7 +50,7 @@ export default async function handler(
           res.status(403).json({ error: "Forbidden user" });
           return;
         }
-        res.status(200);
+        res.status(200).json({});
       } catch (error) {
         console.log(error);
         res.status(500).json({ error: "sql error" });
@@ -63,7 +63,7 @@ export default async function handler(
           await connection.query("DELETE FROM article WHERE article_id = ?", [
             article_id,
           ]);
-          res.status(200);
+          res.status(200).json({});
           return;
         } else {
           const user_id = getUserId(req);
@@ -76,7 +76,7 @@ export default async function handler(
             res.status(403).json({ error: "Forbidden user" });
             return;
           }
-          res.status(200);
+          res.status(200).json({});
           return;
         }
       } catch (error) {

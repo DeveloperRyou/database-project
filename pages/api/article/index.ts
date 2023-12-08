@@ -43,11 +43,11 @@ export default async function handler(
           res.status(400).json({ error: "content is required" });
           return;
         }
-        const [data] = await connection.query(
+        await connection.query(
           "INSERT INTO article (writer_id, content) VALUES (?, ?)",
           [user_id, content]
         );
-        res.status(200);
+        res.status(200).json({});
       } catch (error) {
         console.log(error);
         res.status(500).json({ error: "sql error" });

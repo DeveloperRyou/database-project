@@ -36,7 +36,7 @@ export default async function handler(
           "UPDATE article SET like_count = like_count + 1 WHERE article_id = ?",
           [article_id]
         );
-        res.status(200);
+        res.status(200).json({});
       } catch (error) {
         console.log(error);
         res.status(500).json({ error: "sql error" });
@@ -54,7 +54,7 @@ export default async function handler(
           "UPDATE article SET like_count = like_count - 1 WHERE article_id = ?",
           [article_id]
         );
-        res.status(200);
+        res.status(200).json({});
       } catch (error) {
         console.log(error);
         res.status(500).json({ error: "sql error" });
