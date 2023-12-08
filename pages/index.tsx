@@ -21,30 +21,30 @@ export default function Index({ allArticles }: Props) {
   useEffect(() => {
     if (filter === "latest") {
       setArticles((prev) => {
-        return prev.sort((a, b) => {
+        return [...prev].sort((a, b) => {
           return (
             new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
           );
         });
       });
     } else if (filter === "view") {
-      setArticles((prev) =>
-        prev.sort((a, b) => {
+      setArticles((prev) => {
+        return [...prev].sort((a, b) => {
           return b.view_count - a.view_count;
-        })
-      );
+        });
+      });
     } else if (filter === "like") {
-      setArticles(
-        allArticles.sort((a, b) => {
+      setArticles((prev) => {
+        return [...prev].sort((a, b) => {
           return b.like_count - a.like_count;
-        })
-      );
+        });
+      });
     } else if (filter === "importance") {
-      setArticles(
-        allArticles.sort((a, b) => {
+      setArticles((prev) => {
+        return [...prev].sort((a, b) => {
           return b.importance_value - a.importance_value;
-        })
-      );
+        });
+      });
     }
   }, [filter]);
 
