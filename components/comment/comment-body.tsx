@@ -2,8 +2,14 @@ import CommentBodyControl from "@/components/comment/comment-body-control";
 import CommentEditor from "@/components/comment/comment-editor";
 import Icon from "@/components/icon";
 import { Comment, deleteComment } from "@/lib/api/comment";
+import {
+  createLikeCommentRelation,
+  deleteLikeCommentRelation,
+  getLikeCommentRelation,
+} from "@/lib/api/like";
+import { createViewComment } from "@/lib/api/view";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 interface Props {
@@ -12,15 +18,23 @@ interface Props {
 }
 
 export default function CommentBody({ article_id, comment }: Props) {
+  const [view, setView] = useState(comment.view_count);
+  const [like, setLike] = useState(comment.like_count);
+  const [isLiked, setIsLiked] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
-  const onClickView = () => {
-    if (isExpanded) {
-      setIsExpanded(false);
-    } else {
-      setIsExpanded(true);
-      // view api 호출
+  const onClickView = async () => {
+    try {
+      if (isExpanded) {
+        setIsExpanded(false);
+      } else {
+        await createViewComment(comment.comment_id);
+        setView(view + 1);
+        setIsExpanded(true);
+      }
+    } catch (error) {
+      toast.error(error.response.data.error);
     }
   };
   const onClickEdit = () => {
@@ -40,7 +54,29 @@ export default function CommentBody({ article_id, comment }: Props) {
           toast.error(err.response.data.error);
         });
   };
-  const onClickLike = () => {};
+  const onClickLike = async () => {
+    try {
+      if (isLiked) {
+        await deleteLikeCommentRelation(comment.comment_id);
+        setIsLiked(false);
+        setLike(like - 1);
+      } else {
+        await createLikeCommentRelation(comment.comment_id);
+        setIsLiked(true);
+        setLike(like + 1);
+      }
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
+  };
+
+  useEffect(() => {
+    getLikeCommentRelation(comment.comment_id)
+      .then((res) => {
+        setIsLiked(res.liked);
+      })
+      .catch((err) => {});
+  }, []);
 
   return (
     <div className="mb-2">
@@ -70,10 +106,19 @@ export default function CommentBody({ article_id, comment }: Props) {
             />
           </div>
           <div id="collapse-content">
-            <div className="flex justify-between mt-2">
-              <div className="flex gap-2 text-xs m-auto">
-                <div className="h-fit mt-auto">추천하기</div>
-                <Icon name="like" sz={24} onClick={onClickLike} />
+            <div className="flex justify-center gap-4 mt-2 text-center text-xs">
+              <div className="border border-black py-1 px-2">
+                <Icon name="view" sz={18} />
+                <div>{view}</div>
+              </div>
+              <div
+                className={`border border-black py-1 px-2 cursor-pointer ${
+                  isLiked && "bg-red-100"
+                }`}
+                onClick={onClickLike}
+              >
+                <Icon name="like" sz={18} />
+                <div>{like}</div>
               </div>
             </div>
           </div>
