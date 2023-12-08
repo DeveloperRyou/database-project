@@ -79,12 +79,18 @@ type Params = {
 };
 
 export async function getServerSideProps({ params }: Params) {
-  const article = await getArticleById(params.article_id);
-  return {
-    props: {
-      article: {
-        ...article,
+  try {
+    const article = await getArticleById(params.article_id);
+    return {
+      props: {
+        article: {
+          ...article,
+        },
       },
-    },
-  };
+    };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
 }
