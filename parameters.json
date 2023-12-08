@@ -1,5 +1,5 @@
 {
-  "decayPeriod": "0.0003",
+  "decayPeriod": "0.003",
   "decayRate": "0.8",
   "threshold": "3",
   "viewsWeight": "0.5",

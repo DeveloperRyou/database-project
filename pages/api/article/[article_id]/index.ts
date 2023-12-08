@@ -42,16 +42,25 @@ export default async function handler(
     case "PUT":
       if (!authGuard(req, res)) return;
       try {
-        const user_id = getUserId(req);
-        const [data] = await connection.query(
-          "UPDATE article SET content = ? WHERE article_id = ? AND writer_id = ?",
-          [req.body.content, article_id, user_id]
-        );
-        if ((data as ResultSetHeader).affectedRows === 0) {
-          res.status(403).json({ error: "Forbidden user" });
+        if (adminGuard(req)) {
+          await connection.query(
+            "UPDATE article SET content = ? WHERE article_id = ?",
+            [req.body.content, article_id]
+          );
+          res.status(200).json({});
           return;
+        } else {
+          const user_id = getUserId(req);
+          const [data] = await connection.query(
+            "UPDATE article SET content = ? WHERE article_id = ? AND writer_id = ?",
+            [req.body.content, article_id, user_id]
+          );
+          if ((data as ResultSetHeader).affectedRows === 0) {
+            res.status(403).json({ error: "Forbidden user" });
+            return;
+          }
+          res.status(200).json({});
         }
-        res.status(200).json({});
       } catch (error) {
         console.log(error);
         res.status(500).json({ error: "sql error" });

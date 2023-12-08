@@ -26,7 +26,7 @@ INSERT INTO `users` (`user_id`, `email_id`, `password`, `name`, `type`, `birth`,
 CREATE TABLE IF NOT EXISTS `article` (
   `article_id` int(11) NOT NULL AUTO_INCREMENT,
   `writer_id` int(11) NOT NULL,
-  `content` text NOT NULL,
+  `content` mediumtext NOT NULL,
   `like_count` int(11) NOT NULL DEFAULT 0,
   `view_count` int(11) NOT NULL DEFAULT 0,
   `importance_value` double NOT NULL DEFAULT 0,

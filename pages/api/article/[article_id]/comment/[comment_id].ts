@@ -1,4 +1,5 @@
 import { Comment } from "@/lib/api/comment";
+import adminGuard from "@/lib/auth/admin-guard";
 import authGuard from "@/lib/auth/auth-guard";
 import getUserId from "@/lib/auth/get-user-id";
 import connect from "@/lib/mysql/connect";
@@ -42,16 +43,26 @@ export default async function handler(
     case "PUT":
       if (!authGuard(req, res)) return;
       try {
-        const user_id = getUserId(req);
-        const [data] = await connection.query(
-          "UPDATE comment SET content = ? WHERE comment_id = ? AND writer_id = ?",
-          [req.body.content, comment_id, user_id]
-        );
-        if ((data as ResultSetHeader).affectedRows === 0) {
-          res.status(403).json({ error: "Forbidden user" });
+        if (adminGuard(req)) {
+          await connection.query(
+            "UPDATE comment SET content = ? WHERE comment_id = ?",
+            [req.body.content, comment_id]
+          );
+          res.status(200).json({});
+          return;
+        } else {
+          const user_id = getUserId(req);
+          const [data] = await connection.query(
+            "UPDATE comment SET content = ? WHERE comment_id = ? AND writer_id = ?",
+            [req.body.content, comment_id, user_id]
+          );
+          if ((data as ResultSetHeader).affectedRows === 0) {
+            res.status(403).json({ error: "Forbidden user" });
+            return;
+          }
+          res.status(200).json({});
           return;
         }
-        res.status(200).json({});
       } catch (error) {
         console.log(error);
         res.status(500).json({ error: "sql error" });
@@ -60,16 +71,25 @@ export default async function handler(
     case "DELETE":
       if (!authGuard(req, res)) return;
       try {
-        const user_id = getUserId(req);
-        const [data] = await connection.query(
-          "DELETE FROM comment WHERE comment_id = ? AND writer_id = ?",
-          [comment_id, user_id]
-        );
-        if ((data as ResultSetHeader).affectedRows === 0) {
-          res.status(403).json({ error: "Forbidden user" });
+        if (adminGuard(req)) {
+          await connection.query("DELETE FROM comment WHERE comment_id = ?", [
+            comment_id,
+          ]);
+          res.status(200).json({});
+          return;
+        } else {
+          const user_id = getUserId(req);
+          const [data] = await connection.query(
+            "DELETE FROM comment WHERE comment_id = ? AND writer_id = ?",
+            [comment_id, user_id]
+          );
+          if ((data as ResultSetHeader).affectedRows === 0) {
+            res.status(403).json({ error: "Forbidden user" });
+            return;
+          }
+          res.status(200).json({});
           return;
         }
-        res.status(200).json({});
       } catch (error) {
         console.log(error);
         res.status(500).json({ error: "sql error" });

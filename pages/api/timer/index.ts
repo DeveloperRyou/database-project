@@ -12,11 +12,11 @@ if (interval === null)
       try {
         await connection.beginTransaction();
         await connection.query(
-          `UPDATE article SET importance_value = importance_value / ?`,
+          `UPDATE article SET importance_value = importance_value * ?`,
           [paramsData.decayRate]
         );
         await connection.query(
-          `UPDATE comment SET importance_value = importance_value / ?`,
+          `UPDATE comment SET importance_value = importance_value * ?`,
           [paramsData.decayRate]
         );
         await connection.query(

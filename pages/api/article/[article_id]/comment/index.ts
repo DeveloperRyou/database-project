@@ -42,7 +42,7 @@ export default async function handler(
       if (!authGuard(req, res)) return;
       try {
         const user_id = getUserId(req);
-        const [data] = await connection.query(
+        await connection.query(
           "INSERT INTO comment (article_id, writer_id, content) VALUES (?, ?, ?)",
           [article_id, user_id, req.body.content]
         );
