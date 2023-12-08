@@ -71,7 +71,7 @@ export default function Index({ allArticles }: Props) {
           <h3 className="mb-8 text-3xl md:text-5xl font-bold tracking-tighter leading-tight">
             게시글
           </h3>
-          {allArticles.length > 0 && <MoreStories articles={articles} />}
+          {articles.length > 0 && <MoreStories articles={articles} />}
           <div className="flex justify-between">
             <div className="flex gap-2">
               <div className="h-fit my-auto">검색</div>
